@@ -1,31 +1,45 @@
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-class ListView(QTableWidget):
+from .ListEntry import ListEntry
+
+class ListView(QScrollArea):
 
         def __init__(self, filtered=True, parent=None):
             super().__init__(parent)
 
             self._filtered = filtered
-            self._entries = []
-            self._priorities = []
+            self._widgets = []
 
             self.initUI()
 
         def initUI(self):
 
-            if self._filtered:
-                self.setColumnCount(2)
-                self.setHorizontalHeaderLabels(['Title', 'Reasons'])
-                self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-                self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-            else:
-                self.setColumnCount(1)
-                self.setHorizontalHeaderLabels(['Title'])
-                self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.setBackgroundRole(QPalette.Light)
+            self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+            self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+            widget = QWidget(self)
+
+            self._layout = QVBoxLayout(self)
+
+            widget.setLayout(self._layout)
+
+            self.setWidget(widget)
+            self.setWidgetResizable(True) # This line took me ca. 1 hour....
 
         def clear(self):
-            self.setRowCount(0)
+            for widget in self._widgets:
+                self._layout.removeWidget(widget)
 
-        def addEntry(self, entry, priority=-1):
-            self.insertRow(self.rowCount())
-            self.setItem(self.rowCount()-1, 0, QTableWidgetItem(entry.title))
+            self._widgets = []
+
+
+        def setEntries(self, entries):
+            self.clear()
+
+            for entry in entries:
+                widget = ListEntry(entry, self._filtered)
+                self._layout.addWidget(widget)
+                self._widgets.append(widget)

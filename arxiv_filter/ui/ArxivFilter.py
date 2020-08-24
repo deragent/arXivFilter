@@ -21,7 +21,9 @@ class ArxivFilter(QMainWindow):
         lo = QVBoxLayout()
 
         labelFiltered = QLabel("Filtered Entries", self)
+        labelFiltered.setStyleSheet("font-weight: bold; font-size: 12pt");
         labelOther = QLabel("Other Entries", self)
+        labelOther.setStyleSheet("font-weight: bold; font-size: 12pt");
 
         # Construct Filtered Table
         self.tableFiltered = ListView(filtered = True, parent=self)
@@ -70,10 +72,6 @@ class ArxivFilter(QMainWindow):
         if self._parser.error() is not None:
             self.statusBar.showMessage(self._parser.error(), 5000)
 
-        # Clear the tables
-        self.tableFiltered.clear()
-
-        for entry in self._parser.entries():
-            self.tableFiltered.addEntry(entry)
+        self.tableFiltered.setEntries(self._parser.entries())
 
         self._loading = False
