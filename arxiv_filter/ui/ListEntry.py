@@ -111,15 +111,21 @@ class ListEntry(QFrame):
         meta_widget = QWidget()
         meta_lo = QVBoxLayout()
 
+        collaboration = QLabel(self._entry.collaboration)
         authors = QLabel('\n\n'.join(self._entry.authors))
         categories = QLabel('\n\n'.join(self._entry.categories))
 
+        collaboration.setStyleSheet("font-weight: bold; font-style: italic")
         authors.setStyleSheet("font-weight: bold")
         categories.setStyleSheet("font-style: italic")
 
+        meta_lo.addWidget(collaboration)
         meta_lo.addWidget(authors)
-        meta_lo.insertSpacing(1, 20)
         meta_lo.addWidget(categories)
+
+        meta_lo.insertSpacing(1, 20)
+        meta_lo.insertSpacing(3, 20)
+
         meta_widget.setLayout(meta_lo)
 
         ## Abstract
