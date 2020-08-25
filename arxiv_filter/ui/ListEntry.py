@@ -70,13 +70,20 @@ class ListEntry(QFrame):
 
     def initUI(self):
 
+        self.setContentsMargins(0, 0, 0, 0)
         self.setFrameStyle(QFrame.Panel | QFrame.Raised);
         self.setLineWidth(1);
 
         lo = QVBoxLayout(self)
 
-        self._header = QWidget()
+        self._header = QFrame()
         self._content = QWidget()
+
+        # Color the header if filtered
+        if self._filtered:
+            color = int(self._entry.score/100 * 255)
+            if color > 255: color = 255
+            self._header.setStyleSheet("background-color: rgb(%i, %i, %i);"%(255- color, 255 - color, 255));
 
         self._content.setVisible(False)
 
