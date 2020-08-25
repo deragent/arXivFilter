@@ -63,6 +63,8 @@ class ArxivFilter(QMainWindow):
         lo.setStretch(1, 2)
         lo.setStretch(3, 1)
 
+        lo.insertSpacing(2, 20)
+
         widget = QWidget()
         widget.setLayout(lo)
         self.setCentralWidget(widget)
