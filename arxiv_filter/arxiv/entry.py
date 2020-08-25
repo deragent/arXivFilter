@@ -130,7 +130,7 @@ class entry:
         # This could very likely be improved in the future for additional
         # edge cases.
 
-        self.authors = [a.strip() for a in authors]
+        self.authors = [a.strip() for a in authors if len(a.strip()) > 0]
 
     def parseDateStr(self, datestr):
         try:
