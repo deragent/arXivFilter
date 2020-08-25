@@ -32,6 +32,7 @@ class ListView(QScrollArea):
         def clear(self):
             for widget in self._widgets:
                 self._layout.removeWidget(widget)
+                widget.setParent(None)
 
             self._widgets = []
 
