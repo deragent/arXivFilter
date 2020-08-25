@@ -96,7 +96,7 @@ class ArxivFilter(QMainWindow):
         self.statusBar().clearMessage()
 
         if self._parser.error() is not None:
-            self.statusBar.showMessage(self._parser.error(), 5000)
+            self.statusBar().showMessage(self._parser.error(), 5000)
 
         filtered = []
         other = []
