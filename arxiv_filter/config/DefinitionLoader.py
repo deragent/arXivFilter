@@ -19,8 +19,9 @@ class DefinitionLoader():
 
     def loadDefault(self):
         for path in self.DEFAULT_LOCATIONS:
-            if os.path.isfile(path + self.FILE_NAME):
-                return self.loadFromFile(path + self.FILE_NAME)
+            file = os.path.expanduser(path + self.FILE_NAME)
+            if os.path.isfile(file):
+                return self.loadFromFile(file)
 
         self.error = "No default config file (%s) found in [%s]!"%(
             self.FILE_NAME, ', '.join(self.DEFAULT_LOCATIONS))
@@ -33,5 +34,5 @@ class DefinitionLoader():
                 self.definition = yaml.safe_load(f)
                 return True
         except Exception as e:
-            self.error = e
+            self.error = str(e)
             return False
