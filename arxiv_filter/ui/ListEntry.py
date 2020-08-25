@@ -37,7 +37,7 @@ class FoldLabel(QLabel):
 
         self._closed = True
 
-        self.setStyleSheet("font-size: 18pt; font-weight: bold;");
+        self.setStyleSheet("font-size: 15pt; font-weight: bold;");
 
     def toggle(self):
         if self._closed:
@@ -102,12 +102,36 @@ class ListEntry(QWidget):
         self._header.setLayout(header_lo)
 
         # Create the content
-        content_lo = QVBoxLayout()
+        content_lo = QHBoxLayout()
 
-        content_lo.addWidget(QLabel("Test"))
+        ## Authors and categories
+        meta_widget = QWidget()
+        meta_lo = QVBoxLayout()
+
+        authors = QLabel('\n\n'.join(self._entry.authors))
+        categories = QLabel('\n\n'.join(self._entry.categories))
+
+        authors.setStyleSheet("font-weight: bold")
+        categories.setStyleSheet("font-style: italic")
+
+        meta_lo.addWidget(authors)
+        meta_lo.addWidget(categories)
+        meta_widget.setLayout(meta_lo)
+
+        ## Abstract
+
+
+        abstract = QLabel(self._entry.abstract)
+        abstract.setWordWrap(True)
+        abstract.setStyleSheet("font-size: 11pt; line-height: 160%; text-align: justify;")
+
+        content_lo.addWidget(meta_widget)
+        content_lo.addWidget(abstract)
+
+        content_lo.setStretch(0, 1)
+        content_lo.setStretch(1, 4)
 
         self._content.setLayout(content_lo)
-
 
         self.setLayout(lo)
 
