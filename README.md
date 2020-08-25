@@ -9,5 +9,6 @@ Then drag and drop the text of an arXiv daily e-mail blast anywhere into the win
 
 ## Dependencies
 - Python 3
+  - pyyaml
 - Qt5
 - PyQt5
