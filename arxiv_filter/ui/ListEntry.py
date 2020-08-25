@@ -105,7 +105,8 @@ class ListEntry(QFrame):
         self._fold.clicked.connect(self.toggleContent)
 
         if self._filtered:
-            reason = QLabel("[A]B[C][D]")
+            hits = [key[0].upper() for key, value in self._entry.hits.items() if value]
+            reason = QLabel("Score: %i\n\n%s"%(self._entry.score, ''.join(hits)))
             header_lo.addWidget(reason)
             header_lo.setStretch(2, 0.01)
 
