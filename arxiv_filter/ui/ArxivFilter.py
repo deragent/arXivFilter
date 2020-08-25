@@ -1,12 +1,33 @@
+import sys
+
 from PyQt5.QtWidgets import *
 
 from .ParserThread import ParserThread
 from .ListView import ListView
+from ..config import DefinitionLoader
 
 class ArxivFilter(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, config=None):
         super().__init__()
+
+        self._config = config
+
+        configLoader = DefinitionLoader()
+        if self._config is not None:
+            configOK = configLoader.loadFromFile(self._config)
+        else:
+            configOK = configLoader.loadDefault()
+
+        if not configOK:
+            error = QErrorMessage()
+            if configLoader.error is not None:
+                error.showMessage(configLoader.error)
+            else:
+                error.showMessage("Error while loading the config!")
+            error.exec_()
+
+            sys.exit(-1)
 
         self._loading = False
 
