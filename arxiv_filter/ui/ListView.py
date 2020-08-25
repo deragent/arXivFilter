@@ -40,7 +40,15 @@ class ListView(QScrollArea):
         def setEntries(self, entries):
             self.clear()
 
-            for entry in entries:
+            if self._filtered:
+                scores = [e.score for e in entries]
+                indexes = sorted(range(len(scores)), key=scores.__getitem__)
+                indexes.reverse()
+            else:
+                indexes = range(0, len(entries))
+
+            for idx in indexes:
+                entry = entries[idx]
                 widget = ListEntry(entry, self._filtered)
                 self._layout.addWidget(widget)
                 self._widgets.append(widget)
