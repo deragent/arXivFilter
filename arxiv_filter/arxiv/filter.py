@@ -15,7 +15,7 @@ class filter():
             if key.lower() == 'author':
                 score, matches = self._scoreList(self._definition[key], entry.authors)
                 if score > 0:
-                    scored.hits['author'] = True
+                    scored.hits['peopl'] = True
                     scored.score += score
                     scored.matched_authors = matches
 
@@ -40,7 +40,7 @@ class filter():
             elif key.lower() == 'collaboration':
                 score = self._scoreString(self._definition[key], entry.collaboration)
                 if score > 0:
-                    scored.hits['collaboration'] = True
+                    scored.hits['group'] = True
                     scored.score += score
 
         return scored
@@ -65,7 +65,7 @@ class filter():
         str = str.replace('[', '').replace(']', '').replace('(', '').replace(')', '').replace('{', '').replace('}', '')
         str = str.replace('^', '').replace('\'', '').replace('`', '').replace('"', '').replace('´', '').replace('&', '')
 
-        return str
+        return str.lower()
 
 
     def _scoreList(self, definition, values):
