@@ -90,7 +90,7 @@ class ListEntry(QFrame):
         header_lo.addWidget(self._fold)
         header_lo.setStretch(0, 0.01)
 
-        title = EntryLabel(self._entry.title)
+        title = EntryLabel(self._entry.entry.title)
         header_lo.addWidget(title)
         header_lo.setStretch(1, 1)
 
@@ -111,9 +111,9 @@ class ListEntry(QFrame):
         meta_widget = QWidget()
         meta_lo = QVBoxLayout()
 
-        collaboration = QLabel(self._entry.collaboration)
-        authors = QLabel('\n\n'.join(self._entry.authors))
-        categories = QLabel('\n\n'.join(self._entry.categories))
+        collaboration = QLabel(self._entry.entry.collaboration)
+        authors = QLabel('\n\n'.join(self._entry.matched_authors))
+        categories = QLabel('\n\n'.join(self._entry.matched_categories))
 
         collaboration.setStyleSheet("font-weight: bold; font-style: italic")
         authors.setStyleSheet("font-weight: bold")
@@ -131,7 +131,7 @@ class ListEntry(QFrame):
         ## Abstract
 
 
-        abstract = QLabel(self._entry.abstract)
+        abstract = QLabel(self._entry.entry.abstract)
         abstract.setWordWrap(True)
         abstract.setStyleSheet("font-size: 11pt; line-height: 160%; text-align: justify;")
 
@@ -150,4 +150,4 @@ class ListEntry(QFrame):
         self._content.setVisible(not self._content.isVisible())
 
     def openLink(self):
-        QDesktopServices.openUrl(QUrl(self._entry.link))
+        QDesktopServices.openUrl(QUrl(self._entry.entry.link))

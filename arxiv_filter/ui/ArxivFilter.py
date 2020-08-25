@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import *
 from .ParserThread import ParserThread
 from .ListView import ListView
 from ..config import DefinitionLoader
+from ..arxiv import filter
 
 class ArxivFilter(QMainWindow):
 
@@ -28,6 +29,8 @@ class ArxivFilter(QMainWindow):
             error.exec_()
 
             sys.exit(-1)
+
+        self._filter = filter(configLoader.definition)
 
         self._loading = False
 
@@ -93,6 +96,18 @@ class ArxivFilter(QMainWindow):
         if self._parser.error() is not None:
             self.statusBar.showMessage(self._parser.error(), 5000)
 
-        self.tableFiltered.setEntries(self._parser.entries())
+        filtered = []
+        other = []
+
+        for entry in self._parser.entries():
+            scored = self._filter.score(entry)
+
+            if scored.score > 0:
+                filtered.append(scored)
+            else:
+                other.append(scored)
+
+        self.tableFiltered.setEntries(filtered)
+        self.tableOther.setEntries(other)
 
         self._loading = False
