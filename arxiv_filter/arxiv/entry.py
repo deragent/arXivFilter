@@ -20,7 +20,7 @@ class entry:
         self.title = ''
 
         self.authors = []
-        self.colaboration = ''
+        self.collaboration = ''
 
         self.categories = []
         self.doi = ''
@@ -80,11 +80,15 @@ class entry:
             ## TODO support more metadata
 
 
+    def _sanitize(self, str):
+        return str.replace('\\"a', 'ä').replace('\\"u', 'ü').replace('\\"o', 'ö').replace('\\`e', 'è').replace('\\\'e', 'é')
+
+
     def parseAbstract(self, data):
         abstract = ' '.join(data.strip().split('\n'))
 
         # Replace some common latex umlaut notations
-        self.abstract = abstract.replace('\"a', 'ä').replace('\"u', 'ü').replace('\"o', 'ö')
+        self.abstract = self._sanitize(abstract)
 
 
     def parseFooter(self, data):
@@ -101,8 +105,32 @@ class entry:
 
 
     def parseAuthors(self, authorstr):
-        # TODO Implement
-        pass
+
+        authorstr = self._sanitize(authorstr)
+
+        authors = authorstr.strip().split(',')
+
+        # Extract the collaboration at the front
+        if ': ' in authors[0]:
+            front = authors[0].split(': ', 1)
+
+            self.collaboration = front[0].strip()
+            authors[0] = front[1].strip()
+        elif 'collaboration' in authors[0].lower():
+            self.collaboration = authors[0]
+            authors = authors[1:]
+
+        # Split last author on 'and'
+        if len(authors) > 0 and ' and ' in authors[-1]:
+            back = authors[-1].split(' and ', 1)
+            authors[-1] = back[0]
+            authors.append(back[1])
+
+        # This is a very basic author extraction
+        # This could very likely be improved in the future for additional
+        # edge cases.
+
+        self.authors = [a.strip() for a in authors]
 
     def parseDateStr(self, datestr):
         try:
