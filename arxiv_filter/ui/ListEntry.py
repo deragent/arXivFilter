@@ -58,7 +58,7 @@ class FoldLabel(QLabel):
 
 
 
-class ListEntry(QWidget):
+class ListEntry(QFrame):
 
     def __init__(self, entry, filtered=True, parent=None):
         super().__init__(parent)
@@ -69,6 +69,9 @@ class ListEntry(QWidget):
         self.initUI()
 
     def initUI(self):
+
+        self.setFrameStyle(QFrame.Panel | QFrame.Raised);
+        self.setLineWidth(1);
 
         lo = QVBoxLayout(self)
 
@@ -115,6 +118,7 @@ class ListEntry(QWidget):
         categories.setStyleSheet("font-style: italic")
 
         meta_lo.addWidget(authors)
+        meta_lo.insertSpacing(1, 20)
         meta_lo.addWidget(categories)
         meta_widget.setLayout(meta_lo)
 
