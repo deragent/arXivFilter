@@ -70,7 +70,7 @@ class filter():
 
     def _scoreList(self, definition, values):
         score = 0
-        matches = 0
+        matches = []
 
         for item in values:
             clean = self._sanitize(item)
