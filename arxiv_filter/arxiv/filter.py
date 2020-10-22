@@ -15,7 +15,7 @@ class filter():
             if key.lower() == 'author':
                 score, matches = self._scoreList(self._definition[key], entry.authors)
                 if score > 0:
-                    scored.hits['peopl'] = True
+                    scored.hits['people'] = True
                     scored.score += score
                     scored.matched_authors = matches
 
