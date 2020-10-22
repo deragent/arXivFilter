@@ -1,5 +1,6 @@
 import sys
 
+from PyQt5 import QtCore
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
@@ -43,7 +44,7 @@ class ArxivFilter(QMainWindow):
 
         self.setWindowTitle('Arxiv Daily E-Mail Filter')
 
-        lo = QVBoxLayout()
+        self.lo = QVBoxLayout()
 
         labelFiltered = QLabel("Filtered Entries", self)
         labelFiltered.setStyleSheet("font-weight: bold; font-size: 12pt");
@@ -51,23 +52,30 @@ class ArxivFilter(QMainWindow):
         labelOther.setStyleSheet("font-weight: bold; font-size: 12pt");
 
         # Construct Filtered Table
-        self.tableFiltered = ListView(filtered = True, parent=self)
+        self.tableFiltered = ListView(filtered = True)
 
         # Construct Other Table
-        self.tableOther = ListView(filtered = False, parent=self)
+        self.tableOther = ListView(filtered = False)
 
-        lo.addWidget(labelFiltered)
-        lo.addWidget(self.tableFiltered)
-        lo.addWidget(labelOther)
-        lo.addWidget(self.tableOther)
+        # Construct the Usage Hint
+        self.hint = QLabel("Drag-and-drop or paste (Ctrl+V) the text of the daily Arxiv E-Mail")
+        self.hint.setStyleSheet("font-weight: bold; font-size: 14pt; color: #3e3e3e; background-color: white")
+        self.hint.setWordWrap(True)
+        self.hint.setAlignment(QtCore.Qt.AlignCenter)
+        self._hintShown = True
 
-        lo.setStretch(1, 2)
-        lo.setStretch(3, 1)
+        self.lo.addWidget(labelFiltered)
+        self.lo.addWidget(self.hint)
+        self.lo.addWidget(labelOther)
+        self.lo.addWidget(self.tableOther)
 
-        lo.insertSpacing(2, 20)
+        self.lo.setStretch(1, 2)
+        self.lo.setStretch(3, 1)
+
+        self.lo.insertSpacing(2, 20)
 
         widget = QWidget()
-        widget.setLayout(lo)
+        widget.setLayout(self.lo)
         self.setCentralWidget(widget)
 
         # Enable pasting of E-Mail text
@@ -104,8 +112,14 @@ class ArxivFilter(QMainWindow):
         self._loading = True
 
 
+    def _hideHint(self):
+        if self._hintShown:
+            self.lo.replaceWidget(self.hint, self.tableFiltered)
+            self._hintShown = False
 
     def parsedCallback(self):
+
+        self._hideHint()
 
         # Clear the status bar and show potential errors
         self.statusBar().clearMessage()
