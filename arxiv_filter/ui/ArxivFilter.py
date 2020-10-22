@@ -1,5 +1,6 @@
 import sys
 
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from .ParserThread import ParserThread
@@ -69,7 +70,12 @@ class ArxivFilter(QMainWindow):
         widget.setLayout(lo)
         self.setCentralWidget(widget)
 
+        # Enable pasting of E-Mail text
+        self.shortcutPaste = QShortcut(QKeySequence('Ctrl+V'), self)
+        self.shortcutPaste.activated.connect(self.pasteEvent)
 
+
+    # Drag and Drop handling of E-Mail text
     def dragEnterEvent(self, e):
         if self._loading:
             e.ignore()
@@ -80,6 +86,15 @@ class ArxivFilter(QMainWindow):
 
     def dropEvent(self, e):
         text = e.mimeData().text()
+        self._setArxivText(text)
+
+
+    def pasteEvent(self):
+        text = QGuiApplication.clipboard().mimeData().text()
+        self._setArxivText(text)
+
+
+    def _setArxivText(self, text):
 
         self.statusBar().showMessage("Loading ... ")
 
