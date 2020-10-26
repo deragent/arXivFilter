@@ -4,7 +4,7 @@ import argparse
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
-from . import ui
+from arxiv_filter import ui
 
 def main():
     app = QApplication(sys.argv)

@@ -1,5 +1,5 @@
 import pathlib
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="arxiv-filter",
-    version="0.3.0",
+    version="0.3.1",
     description="Quickly filter the daily arXiv email for your interests.",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -23,7 +23,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
     ],
-    packages=["arxiv_filter"],
+    packages=find_packages(),
     include_package_data=True,
     install_requires=["pyyaml", "PyQt5"],
     entry_points={
