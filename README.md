@@ -3,7 +3,7 @@
 ## Usage
 Run with
 
-    python3 ArxivFilter.py
+    python3 -m arxiv_filter
 
 Then drag and drop the text of an arXiv daily e-mail blast anywhere into the window.
 
