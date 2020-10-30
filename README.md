@@ -9,7 +9,7 @@
 
 **Tired of scanning hundreds of arXiv entries like this manually?**
 
-![Example of an arXiv email entry](doc/images/ArxivEmail.png)
+![Example of an arXiv email entry](https://github.com/deragent/arXivFilter/blob/master/doc/images/ArxivEmail.png)
 
 This is a simple GUI program, which can be used to filter the daily arXiv email according to criteria defined in a custom config file.
 
@@ -56,11 +56,11 @@ Alternatively, a custom config file can be passed to the program via the `-c PAT
 
 ### Interface
 
-![Empty program window after start-up.](doc/images/WindowEmpty.png)
+![Empty program window after start-up.](https://github.com/deragent/arXivFilter/blob/master/doc/images/WindowEmpty.png)
 
 Once the program has launched, an empty window is presented. Copy and past or drag and drop the text of an arXiv email into the window in order to start the filtering process.
 
-![Program window showing filtered arXiv entries after copy/paste or drag-n-drop.](doc/images/WindowFiltered.png)
+![Program window showing filtered arXiv entries after copy/paste or drag-n-drop.](https://github.com/deragent/arXivFilter/blob/master/doc/images/WindowFiltered.png)
 
 Once the filtering is done, the two lists in the window are populated with entries. The top entries are highlighted in different shades of blue, according to the total score of an entry. In the image, the paper "High-resolution for IAXO: MMC-based X-ray Detectors" has obtained the highest score of 24 and is therefore listed at the top. The score for each entry is given.
 
@@ -76,7 +76,7 @@ In the above example, the first paper has a match of a keyword in the title and 
 
 By clicking on the title of the paper, the corresponding arXiv page is opened in a browser.
 
-![Entry of the filtered list showing the details of the paper](doc/images/WindowDetails.png)
+![Entry of the filtered list showing the details of the paper](https://github.com/deragent/arXivFilter/blob/master/doc/images/WindowDetails.png)
 
 By clicking on the [**>**] symbol, the details of the paper is shown. The details include:
 
