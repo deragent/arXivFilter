@@ -40,7 +40,6 @@ class parser:
         ## Remove the E-Mail Footer
         parts = str.split(self.FOOTER_DIVIDER)
         if len(parts) < 2:
-            print(parts)
             self.error = "Error: This is not an arXiv E-Mail!"
             return
 
