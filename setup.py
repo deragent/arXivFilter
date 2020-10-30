@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="arxiv-filter",
-    version="0.3.1",
+    version="0.3.2",
     description="Quickly filter the daily arXiv email for your interests.",
     long_description=README,
     long_description_content_type="text/markdown",
