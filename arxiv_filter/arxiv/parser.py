@@ -33,9 +33,14 @@ class parser:
 
     def fromText(self, str):
 
+        ## Unify the line-break character
+        # Drap-n-Drop and Copy-Paste might not show the same line-break even on linux!
+        str = str.replace("\r\n", "\n")
+
         ## Remove the E-Mail Footer
         parts = str.split(self.FOOTER_DIVIDER)
         if len(parts) < 2:
+            print(parts)
             self.error = "Error: This is not an arXiv E-Mail!"
             return
 
