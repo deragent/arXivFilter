@@ -40,18 +40,17 @@ class parser:
         ## Remove the E-Mail Footer
         parts = str.split(self.FOOTER_DIVIDER)
         if len(parts) < 2:
-            self.error = "Error: This is not an arXiv E-Mail!"
-            return
+            self.warning = "Warning: This might not be an arXiv E-Mail (missing footer)."
 
         splits = parts[0].split(self.ENTRY_DIVIDER)
         if len(splits) < 2:
-            self.warning = "Warning: This does not look like an arXiv E-Mail!"
-            pass
+            self.warning = "Warning: This might not be an arXiv E-Mail (only one entry)."
 
         for split in splits:
             if not split.startswith('\\\\'):
                 continue
 
+            # TODO better error handling on parse fail
             self._entries.append(entry(split))
 
 
