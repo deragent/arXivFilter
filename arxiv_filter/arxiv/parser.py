@@ -4,7 +4,7 @@ from .entry import entry
 
 class parser:
 
-    FOOTER_DIVIDER = '%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---\n'
+    FOOTER_DIVIDER = '%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---%%%---'
     ENTRY_DIVIDER = '------------------------------------------------------------------------------\n'
 
 
@@ -38,11 +38,12 @@ class parser:
         str = str.replace("\r\n", "\n")
 
         ## Remove the E-Mail Footer
-        parts = str.split(self.FOOTER_DIVIDER)
-        if len(parts) < 2:
+        if self.FOOTER_DIVIDER not in str:
             self.warning = "Warning: This might not be an arXiv E-Mail (missing footer)."
+        else:
+            str = str.split(self.FOOTER_DIVIDER)[0]
 
-        splits = parts[0].split(self.ENTRY_DIVIDER)
+        splits = str.split(self.ENTRY_DIVIDER)
         if len(splits) < 2:
             self.warning = "Warning: This might not be an arXiv E-Mail (only one entry)."
 
