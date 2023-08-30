@@ -38,10 +38,11 @@ class entry:
 
 
     def parseHeader(self, data):
-
+        # Continuing lines either start with two spaces '  ' or a signal space ' ' after the new-line.
         data = data.replace('\n  ', ' ')
-        headers = data.split('\n')
+        data = data.replace('\n ', ' ')
 
+        headers = data.split('\n')
 
         for header in headers:
             header = header.strip()
