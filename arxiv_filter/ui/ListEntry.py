@@ -97,7 +97,10 @@ class ListEntry(QFrame):
         header_lo.addWidget(self._fold)
         header_lo.setStretch(0, 0.01)
 
-        title = EntryLabel(self._entry.entry.title)
+        title_rich = self._entry.entry.title
+        for match in self._entry.matched_title:
+            title_rich = title_rich.replace(match, f'<u>{match}</u>')
+        title = EntryLabel(title_rich)
         header_lo.addWidget(title)
         header_lo.setStretch(1, 1)
 
@@ -137,9 +140,11 @@ class ListEntry(QFrame):
         meta_widget.setLayout(meta_lo)
 
         ## Abstract
+        abstract_rich = self._entry.entry.abstract
+        for match in self._entry.matched_abstract:
+            abstract_rich = abstract_rich.replace(match, f'<b>{match}</b>')
 
-
-        abstract = QLabel(self._entry.entry.abstract)
+        abstract = QLabel(abstract_rich)
         abstract.setWordWrap(True)
         abstract.setStyleSheet("font-size: 11pt; line-height: 160%; text-align: justify;")
 

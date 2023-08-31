@@ -20,15 +20,17 @@ class filter():
                     scored.matched_authors = matches
 
             elif key.lower() == 'keyword':
-                score = self._scoreString(self._definition[key], entry.title)
+                score, matches = self._scoreString(self._definition[key], entry.title)
                 if score > 0:
                     scored.hits['title'] = True
                     scored.score += score
+                    scored.matched_title = matches
 
-                score = self._scoreString(self._definition[key], entry.abstract)
+                score, matches = self._scoreString(self._definition[key], entry.abstract)
                 if score > 0:
                     scored.hits['abstract'] = True
                     scored.score += score
+                    scored.matched_abstract = matches
 
             elif key.lower() == 'category':
                 score, matches = self._scoreList(self._definition[key], entry.categories)
@@ -38,7 +40,7 @@ class filter():
                     scored.matched_categories = matches
 
             elif key.lower() == 'collaboration':
-                score = self._scoreString(self._definition[key], entry.collaboration)
+                score, matches = self._scoreString(self._definition[key], entry.collaboration)
                 if score > 0:
                     scored.hits['group'] = True
                     scored.score += score
@@ -57,15 +59,36 @@ class filter():
 
         return out
 
-    def _sanitize(self, str):
-        str = str.replace('ä', 'a').replace('ö', 'o').replace('ü', 'u')
-        str = str.replace('é', 'e').replace('è', 'e').replace('à', 'a').replace('â', 'a')
+    def _sanitize(self, str, returnIdx=False):
+        REMOVE = [
+            '-', '.', ',', '_', ':', ';',
+            '[', ']', '(', ')', '{', '}',
+            '^', '\\', '/', '\'', '`', '"', '´',
+            '&', '$'
+        ]
+        REPLACE = {
+            'ä': 'a', 'ö': 'o', 'ü': 'u',
+            'é': 'e', 'è': 'e', 'à': 'a', 'â': 'a',
+        }
 
-        str = str.replace('-', '').replace('.', '').replace(',', '').replace('_', '').replace(':', '').replace(';', '')
-        str = str.replace('[', '').replace(']', '').replace('(', '').replace(')', '').replace('{', '').replace('}', '')
-        str = str.replace('^', '').replace('\'', '').replace('`', '').replace('"', '').replace('´', '').replace('&', '')
+        # Replace characters
+        clean = str.translate(REPLACE)
 
-        return str.lower()
+        # Remoe characters
+        index = []
+        output = []
+
+        for cc, char in enumerate(clean):
+            if char not in REMOVE:
+                output.append(char)
+                index.append(cc)
+
+        clean = ''.join(output).lower()
+
+        if not returnIdx:
+            return clean
+        else:
+            return clean, index
 
 
     def _scoreList(self, definition, values):
@@ -88,11 +111,17 @@ class filter():
         return score, matches
 
     def _scoreString(self, definition, string):
-        clean = self._sanitize(string)
+        clean, index = self._sanitize(string, returnIdx=True)
 
         score = 0
+        matches = []
+
         for key, value in definition.items():
             if key in clean:
                 score += value
 
-        return score
+                # Extract the match of the original (unsanitized) string
+                start = clean.index(key)
+                matches.append(string[index[start]:index[start+len(key)-1]+1])
+
+        return score, matches

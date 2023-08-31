@@ -15,6 +15,8 @@ class scored_entry():
         self.hits['abstract'] = False
         self.hits['category'] = False
 
+        self.matched_title = []
+        self.matched_abstract = []
         self.matched_authors = []
         self.matched_categories = []
 
