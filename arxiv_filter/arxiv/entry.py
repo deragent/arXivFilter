@@ -68,7 +68,7 @@ class entry:
                 continue
 
             if key == 'title':
-                self.title = value
+                self.title = self._sanitize(value)
             elif key == 'authors':
                 self.parseAuthors(value)
             elif key == 'categories':
