@@ -121,11 +121,8 @@ class entry:
             self.collaboration = authors[0]
             authors = authors[1:]
 
-        # Split last author on 'and'
-        if len(authors) > 0 and ' and ' in authors[-1]:
-            back = authors[-1].split(' and ', 1)
-            authors[-1] = back[0]
-            authors.append(back[1])
+        # Further split authors on ' and '
+        authors = [part for author in authors for part in author.split(' and ')]
 
         # This is a very basic author extraction
         # This could very likely be improved in the future for additional
