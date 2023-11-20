@@ -1,4 +1,5 @@
 import email
+import locale
 
 from .entry import entry
 
@@ -33,6 +34,11 @@ class parser:
 
     def fromText(self, str):
 
+        # Set the locale to 'C' in order to correctly parse the (english)
+        # dates in the E-mail (within the `entry` class)
+        loc = locale.getlocale()
+        locale.setlocale(locale.LC_ALL, 'C')
+
         ## Unify the line-break character
         # Drap-n-Drop and Copy-Paste might not show the same line-break even on linux!
         str = str.replace("\r\n", "\n")
@@ -54,6 +60,7 @@ class parser:
             # TODO better error handling on parse fail
             self._entries.append(entry(split))
 
+        locale.setlocale(locale.LC_ALL, loc)
 
     def entries(self):
         return self._entries;
