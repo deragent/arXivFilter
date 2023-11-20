@@ -95,7 +95,7 @@ class ListEntry(QFrame):
 
         self._fold = FoldLabel()
         header_lo.addWidget(self._fold)
-        header_lo.setStretch(0, 0.01)
+        header_lo.setStretch(0, 0)
 
         title_rich = self._entry.entry.title
         for match in self._entry.matched_title:
@@ -111,7 +111,7 @@ class ListEntry(QFrame):
             hits = [key[0].upper() for key, value in self._entry.hits.items() if value]
             reason = QLabel("Score: %i\n\n%s"%(self._entry.score, ''.join(hits)))
             header_lo.addWidget(reason)
-            header_lo.setStretch(2, 0.01)
+            header_lo.setStretch(2, 0)
 
         self._header.setLayout(header_lo)
 
