@@ -14,34 +14,34 @@ class filter():
 
             if key.lower() == 'author':
                 score, matches = self._scoreList(self._definition[key], entry.authors)
-                if score > 0:
+                if len(matches) > 0:
                     scored.hits['people'] = True
                     scored.score += score
                     scored.matched_authors = matches
 
             elif key.lower() == 'keyword':
                 score, matches = self._scoreString(self._definition[key], entry.title)
-                if score > 0:
+                if len(matches) > 0:
                     scored.hits['title'] = True
                     scored.score += score
                     scored.matched_title = matches
 
                 score, matches = self._scoreString(self._definition[key], entry.abstract)
-                if score > 0:
+                if len(matches) > 0:
                     scored.hits['abstract'] = True
                     scored.score += score
                     scored.matched_abstract = matches
 
             elif key.lower() == 'category':
                 score, matches = self._scoreList(self._definition[key], entry.categories)
-                if score > 0:
+                if len(matches) > 0:
                     scored.hits['category'] = True
                     scored.score += score
                     scored.matched_categories = matches
 
             elif key.lower() == 'collaboration':
                 score, matches = self._scoreString(self._definition[key], entry.collaboration)
-                if score > 0:
+                if len(matches) > 0:
                     scored.hits['group'] = True
                     scored.score += score
 
