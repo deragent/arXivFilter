@@ -83,7 +83,12 @@ class ListEntry(QFrame):
         if self._filtered:
             color = int(self._entry.score/100 * 255)
             if color > 255: color = 255
-            self._header.setStyleSheet("background-color: rgb(%i, %i, %i);"%(255- color, 255 - color, 255));
+            if self._entry.hits['people']:
+                # If an author is matched, color scale: White -> Green
+                self._header.setStyleSheet("background-color: rgb(%i, %i, %i);"%(255 - color, 255 - color/2, 255 - color/2));
+            else:
+                # Normal color scale: White -> Blue
+                self._header.setStyleSheet("background-color: rgb(%i, %i, %i);"%(255 - color, 255 - color, 255));
 
         self._content.setVisible(False)
 
