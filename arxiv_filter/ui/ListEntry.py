@@ -81,14 +81,25 @@ class ListEntry(QFrame):
 
         # Color the header if filtered
         if self._filtered:
-            color = int(self._entry.score/100 * 255)
-            if color > 255: color = 255
+            shade = int(self._entry.score/100 * 255)
+            if shade > 255: shade = 255
+            
             if self._entry.hits['people']:
                 # If an author is matched, color scale: White -> Green
-                self._header.setStyleSheet("background-color: rgb(%i, %i, %i);"%(255 - color, 255 - color/2, 255 - color/2));
+                colors = (255 - shade, 255 - shade/2, 255 - shade/2)
             else:
                 # Normal color scale: White -> Blue
-                self._header.setStyleSheet("background-color: rgb(%i, %i, %i);"%(255 - color, 255 - color, 255));
+                colors = (255 - shade, 255 - shade, 255 - shade/6)
+
+            # Adjust the text color based on the background color
+            # To guarantee good contrast
+            # Based on https://stackoverflow.com/a/41491220 but with adjusted threshold.
+            if ((colors[0] * 0.299) + (colors[1] * 0.587) + (colors[2] * 0.114)) <= 175:
+                text_color = '#fff'
+            else:
+                text_color = '#333'
+
+            self._header.setStyleSheet(f"color: {text_color};background-color: rgb({colors[0]}, {colors[1]}, {colors[2]});");
 
         self._content.setVisible(False)
 
