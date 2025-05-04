@@ -1,4 +1,5 @@
 from .scored_entry import scored_entry
+from . import util
 
 class filter():
 
@@ -54,41 +55,10 @@ class filter():
         for part, keys in definition.items():
             out[part] = {}
             for key, value in keys.items():
-                clean = self._sanitize(key)
+                clean = util.saniztize(key)
                 out[part][clean] = int(value)
 
         return out
-
-    def _sanitize(self, str, returnIdx=False):
-        REMOVE = [
-            '-', '.', ',', '_', ':', ';',
-            '[', ']', '(', ')', '{', '}',
-            '^', '\\', '/', '\'', '`', '"', '´',
-            '&', '$'
-        ]
-        REPLACE = {
-            'ä': 'a', 'ö': 'o', 'ü': 'u',
-            'é': 'e', 'è': 'e', 'à': 'a', 'â': 'a',
-        }
-
-        # Replace characters
-        clean = str.translate(REPLACE)
-
-        # Remoe characters
-        index = []
-        output = []
-
-        for cc, char in enumerate(clean):
-            if char not in REMOVE:
-                output.append(char)
-                index.append(cc)
-
-        clean = ''.join(output).lower()
-
-        if not returnIdx:
-            return clean
-        else:
-            return clean, index
 
 
     def _scoreList(self, definition, values):
@@ -96,7 +66,7 @@ class filter():
         matches = []
 
         for item in values:
-            clean = self._sanitize(item)
+            clean = util.saniztize(item)
             matched = False
 
             for key, value in definition.items():
@@ -111,7 +81,7 @@ class filter():
         return score, matches
 
     def _scoreString(self, definition, string):
-        clean, index = self._sanitize(string, returnIdx=True)
+        clean, index = util.saniztize(string, return_idx=True)
 
         score = 0
         matches = []
