@@ -64,18 +64,15 @@ class filter():
         matches = []
 
         for entry in values:
-            clean = util.saniztize(entry)
+            clean, clean_mapping = util.saniztize(entry, return_idx=True)
             matched = False
 
             for item in self._definition.getCategory(category):
-                if not item.isExact:
-                    if item.keyClean in clean:
-                        # We can do simple matching in this case
-                        score += item.value
-                        matched = True
-                else:
-                    # Need more complex mathing for exact matching!
-                    pass # TODO
+                locations = item.findInString(clean, entry, clean_mapping)
+
+                if len(locations) > 0:
+                    score += item.value
+                    matched = True
 
             if matched:
                 matches.append(entry)
@@ -95,22 +92,20 @@ class filter():
             score: The total score of the given text
             matches: List of all substring of the text string which were matched
         """
-        clean, index = util.saniztize(string, return_idx=True)
+        clean, clean_mapping = util.saniztize(string, return_idx=True)
 
         score = 0
-        matches = []
+        matches = set()
 
         for item in self._definition.getCategory(category):
-            if not item.isExact:
-                # We can do simple matching in this case
-                if item.keyClean in clean:
-                    score += item.value
+            locations = item.findInString(clean, string, clean_mapping)
 
-                    # Extract the match of the original (unsanitized) string
-                    start = clean.index(item.keyClean)
-                    matches.append(string[index[start]:index[start+len(item.keyClean)-1]+1])
-            else:
-                # Need more complex mathing for exact matching!
-                pass # TODO
+            if len(locations) > 0:
+                score += item.value
 
-        return score, matches
+                for location in locations:
+                    start = clean_mapping[location]
+                    end = clean_mapping[location+len(item.keyClean)-1] + 1
+                    matches.add(string[start:end])
+
+        return score, list(matches)
