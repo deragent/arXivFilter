@@ -3,11 +3,11 @@ from . import util
 
 class filter():
 
-    def __init__(self, definition):
+    def __init__(self, definition) -> None:
 
         self._definition = definition
 
-    def score(self, entry):
+    def score(self, entry) -> scored_entry:
 
         scored = scored_entry(entry)
 
@@ -48,37 +48,69 @@ class filter():
 
         return scored
 
-    def _scoreList(self, category, values):
+    def _scoreList(self, category, values) -> tuple[int, list[str]]:
+        """
+        Score a list of strings according to the given category of the definition.
+
+        Arguments:
+            category: The definition category
+            values: The list of string to score
+
+        Returns:
+            score: The total accumulated score over all entries in values
+            matches: List of entries in values which where matched!
+        """
         score = 0
         matches = []
 
-        for item in values:
-            clean = util.saniztize(item)
+        for entry in values:
+            clean = util.saniztize(entry)
             matched = False
 
-            for key, value in self._definition.getCategory(category).items():
-                if key in clean:
-                    score += value
-                    matched = True
+            for item in self._definition.getCategory(category):
+                if not item.isExact:
+                    if item.keyClean in clean:
+                        # We can do simple matching in this case
+                        score += item.value
+                        matched = True
+                else:
+                    # Need more complex mathing for exact matching!
+                    pass # TODO
 
             if matched:
-                matches.append(item)
-
+                matches.append(entry)
 
         return score, matches
 
-    def _scoreString(self, category, string):
+
+    def _scoreString(self, category, string) -> tuple[int, list[str]]:
+        """
+        Score single text (string) according to the given category of the definition.
+
+        Arguments:
+            category: The definition category
+            string: The text string to score
+
+        Returns:
+            score: The total score of the given text
+            matches: List of all substring of the text string which were matched
+        """
         clean, index = util.saniztize(string, return_idx=True)
 
         score = 0
         matches = []
 
-        for key, value in self._definition.getCategory(category).items():
-            if key in clean:
-                score += value
+        for item in self._definition.getCategory(category):
+            if not item.isExact:
+                # We can do simple matching in this case
+                if item.keyClean in clean:
+                    score += item.value
 
-                # Extract the match of the original (unsanitized) string
-                start = clean.index(key)
-                matches.append(string[index[start]:index[start+len(key)-1]+1])
+                    # Extract the match of the original (unsanitized) string
+                    start = clean.index(item.keyClean)
+                    matches.append(string[index[start]:index[start+len(item.keyClean)-1]+1])
+            else:
+                # Need more complex mathing for exact matching!
+                pass # TODO
 
         return score, matches
