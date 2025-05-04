@@ -8,7 +8,7 @@ class DefinitionItem:
 
         # Enable exact matching of a key
         # In this case, the key can not be part of a word!
-        if key.startswith('!'):
+        if key.startswith('^'):
             self._key = key[1:]
             self._exact = True
 
