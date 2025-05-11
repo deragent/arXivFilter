@@ -122,6 +122,8 @@ The score of each keyword, author, collaboration etc. which is found in a given 
 
 The matching of keywords is done in lower case and ignoring special characters as well as most common Umlauts (like ä, ö, ü, é, è etc.). So specifying for example `gaas: 20` as a keyword, will match `GaAs`, `Ga-As` etc.
 
+## Exact Matching
+
 A keyword starting with a '^' is treated as an exact match keyword.
 An exact keyword match is defined, where the character immediately before and after the matched keyword is not a letter of the alphabet, but can still be a special character.
 This is especially useful for short keywords which would lead to a lot of false-positive matched.
