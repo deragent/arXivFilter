@@ -12,6 +12,7 @@ class EntryLabel(QLabel):
 
         self.setWordWrap(True)
         self.setStyleSheet("font-weight: bold;");
+        self.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
 
     def mouseReleaseEvent(self, event):
         self.clicked.emit()
@@ -146,6 +147,10 @@ class ListEntry(QFrame):
         authors.setStyleSheet("font-weight: bold")
         categories.setStyleSheet("font-style: italic")
 
+        collaboration.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
+        authors.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
+        categories.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
+
         meta_lo.addWidget(collaboration)
         meta_lo.addWidget(authors)
         meta_lo.addWidget(categories)
@@ -163,6 +168,7 @@ class ListEntry(QFrame):
         abstract = QLabel(abstract_rich)
         abstract.setWordWrap(True)
         abstract.setStyleSheet("font-size: 11pt; line-height: 160%; text-align: justify;")
+        abstract.setTextInteractionFlags(Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard)
 
         content_lo.addWidget(meta_widget)
         content_lo.addWidget(abstract)
