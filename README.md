@@ -34,6 +34,29 @@ The quickest way to install this program is via [pip / pypi](https://pypi.org/pr
 
 You can also directly clone this repository onto your computer. In this case make sure to manually install the [dependencies](#dependencies).
 
+### Debian / Ubuntu / Modern Python Installations
+On modern Linux python installations, installing packages directly via pip into the system environment is disallowed, and packages are uniquely handled via the distribution native packages (for example via `apt install python3-....` on Debian/Ubuntu).
+arXiv filter is not maintained as a Ubuntu ro Debian _.deb_ package and thus can not be installed via _apt_!
+
+Two possible alternatives:
+
+- Create a dedicated python environment (with `python3 -m venv [ENV-LOCATION]`) and install arXiv filter into that environment.
+  - The downside of this approach is, that the custom environment needs to be activated to run the arXiv filter.
+- The alternative is to use _pypi2deb_ to create a custom _.deb_ package on the fly (following the approach documented here: <https://unix.stackexchange.com/a/761363>) for Ubuntu / Debian based systems.
+
+The following example creates and instals a custom _.deb_ package:
+
+    sudo apt install pypi2deb
+    mkdir /tmp/package_arxivfilter/
+    cd /tmp/package_arxivfilter/
+    py2dsb --build arxiv_filter
+    # At this point potential dependencies need to be installed via apt
+
+    # On success
+    cd result
+    sudo apt install ./python3-arxiv-filter_0.4.0-0~py2deb_all.deb
+    # In the last command the version number changes depending on the arxiv-filter version.
+
 ## Usage
 Run with
 
